@@ -11,6 +11,7 @@ import { individualLeftBottomElement } from "./components/individualLeftBottomEl
 import { individualLeftTopElement } from "./components/individualLeftTopElement";
 import { individualRightBottomElement } from "./components/individualRightBottomElement";
 import { individualRightTopElement } from "./components/individualRightTopElement";
+import { individualExtraElement } from "./components/individualExtraElement";
 import { dashboardLinkElement } from "./components/misc/dashboard_link";
 import { nonFossilElement } from "./components/nonFossil";
 import { solarElement } from "./components/solar";
@@ -39,6 +40,8 @@ import {
   getBottomRightIndividual,
   getTopLeftIndividual,
   getTopRightIndividual,
+  getAllIndividualPositions,
+  checkHasExtraIndividuals,
 } from "./utils/computeIndividualPosition";
 import { displayValue } from "./utils/displayValue";
 import { defaultValues, getDefaultConfig } from "./utils/get-default-config";
@@ -545,10 +548,14 @@ export class PowerFlowCardPlus extends LitElement {
 
     const sortedIndividualObjects = this._config.sort_individual_devices ? sortIndividualObjects(individualObjs) : individualObjs;
 
-    const individualFieldLeftTop = getTopLeftIndividual(sortedIndividualObjects);
-    const individualFieldLeftBottom = getBottomLeftIndividual(sortedIndividualObjects);
-    const individualFieldRightTop = getTopRightIndividual(sortedIndividualObjects);
-    const individualFieldRightBottom = getBottomRightIndividual(sortedIndividualObjects);
+    // Get all individual positions including extra rows
+    const allIndividualPositions = getAllIndividualPositions(sortedIndividualObjects);
+
+    // Legacy position variables for existing layout
+    const individualFieldLeftTop = allIndividualPositions.mainRow.leftTop;
+    const individualFieldLeftBottom = allIndividualPositions.bottomRow.leftBottom;
+    const individualFieldRightTop = allIndividualPositions.mainRow.rightTop;
+    const individualFieldRightBottom = allIndividualPositions.bottomRow.rightBottom;
 
     return html`
       <ha-card
@@ -650,6 +657,34 @@ export class PowerFlowCardPlus extends LitElement {
                   : html``}
               </div>`
             : html`<div class="spacer"></div>`}
+          ${allIndividualPositions.extraRows.length > 0
+            ? allIndividualPositions.extraRows.map(
+                (extraRow, rowIndex) => html`
+                  <div class="row extra-row">
+                    ${extraRow.left
+                      ? individualExtraElement(this, this._config, {
+                          individualObj: extraRow.left,
+                          templatesObj,
+                          newDur,
+                          position: "left",
+                          rowIndex,
+                        })
+                      : html`<div class="spacer"></div>`}
+                    <div class="spacer"></div>
+                    <div class="spacer"></div>
+                    ${extraRow.right
+                      ? individualExtraElement(this, this._config, {
+                          individualObj: extraRow.right,
+                          templatesObj,
+                          newDur,
+                          position: "right",
+                          rowIndex,
+                        })
+                      : html`<div class="spacer"></div>`}
+                  </div>
+                `
+              )
+            : html``}
           ${flowElement(this._config, {
             battery,
             grid,

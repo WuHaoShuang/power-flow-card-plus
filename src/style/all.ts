@@ -227,10 +227,19 @@ export const allDynamicStyles = (
 
   if (individual?.some((ind) => ind.has)) {
     const getStylesForIndividual = (field: IndividualDeviceType, index: number) => {
-      const colors = ["#d0cc5b", "#964cb5", "#b54c9d", "#5bd0cc"];
+      const colors = ["#d0cc5b", "#964cb5", "#b54c9d", "#5bd0cc", "#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#6c5ce7", "#a29bfe"];
       const fieldNames: string[] = ["left-top", "left-bottom", "right-top", "right-bottom"];
 
-      const fieldName = fieldNames?.[index] || "left-top";
+      let fieldName: string;
+      if (index < 4) {
+        fieldName = fieldNames[index];
+      } else {
+        // For extra positions, create dynamic field names
+        const extraIndex = index - 4;
+        const rowIndex = Math.floor(extraIndex / 2);
+        const position = extraIndex % 2 === 0 ? "left" : "right";
+        fieldName = `extra-${position}-${rowIndex}`;
+      }
 
       let individualColor = field?.color;
       if (typeof individualColor === "object") individualColor = convertColorListToHex(individualColor);

@@ -560,4 +560,72 @@ export const styles = css`
   .home-circle-sections {
     pointer-events: none;
   }
+
+  /* Extra rows for additional individual devices */
+  .extra-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .individual-extra {
+    margin: 5px 0;
+  }
+
+  .individual-extra-left {
+    justify-self: flex-start;
+  }
+
+  .individual-extra-right {
+    justify-self: flex-end;
+  }
+
+  /* Individual extra device styling */
+  .individual-extra .circle {
+    width: var(--size-circle-entity);
+    height: var(--size-circle-entity);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--ha-card-background, #fff);
+    border: 2px solid var(--individual-extra-left-0-color, #d0cc5b);
+    cursor: var(--clickable-cursor);
+    position: relative;
+  }
+
+  .individual-extra-right .circle {
+    border-color: var(--individual-extra-right-0-color, #964cb5);
+  }
+
+  .individual-extra ha-icon {
+    color: var(--icon-individual-extra-left-0-color, var(--primary-text-color));
+  }
+
+  .individual-extra-right ha-icon {
+    color: var(--icon-individual-extra-right-0-color, var(--primary-text-color));
+  }
+
+  .individual-extra span {
+    color: var(--text-individual-extra-left-0-color, var(--primary-text-color));
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .individual-extra-right span {
+    color: var(--text-individual-extra-right-0-color, var(--primary-text-color));
+  }
+
+  .individual-extra .label {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--primary-text-color);
+  }
 `;

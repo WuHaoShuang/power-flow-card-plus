@@ -8,7 +8,7 @@ import { baseSecondarySpan } from "./baseSecondarySpan";
 import { IndividualObject } from "@/states/raw/individual/getIndividualObject";
 import { PowerFlowCardPlusConfig } from "@/power-flow-card-plus-config";
 
-export type IndividualKey = `left-top` | `left-bottom` | `right-top` | `right-bottom`;
+export type IndividualKey = `left-top` | `left-bottom` | `right-top` | `right-bottom` | `extra-left-${number}` | `extra-right-${number}`;
 
 export const individualSecondarySpan = (
   hass: HomeAssistant,
